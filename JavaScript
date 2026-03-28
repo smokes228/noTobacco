@@ -1,0 +1,24 @@
+let startTime = Date.now();
+let interval;
+let isRunning = true;
+
+function updateTimer() {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - startTime;
+
+    const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = `Дни: ${days}`;
+    document.getElementById("hours").textContent = `Часы: ${hours}`;
+    document.getElementById("minutes").textContent = `Минуты: ${minutes}`;
+    document.getElementById("seconds").textContent = `Секунды: ${seconds}`;
+}
+
+function resetTimer() {
+    startTime = Date.now();
+}
+
+interval = setInterval(updateTimer, 1000);
