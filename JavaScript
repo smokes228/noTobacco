@@ -1,6 +1,26 @@
-let startTime = Date.now();
+let startTime = localStorage.getItem('startTime'); // Получаем время начала из localStorage
 let interval;
-let isRunning = true;
+let isRunning = false;
+
+function startTimer() {
+    if (!startTime) {
+        // Если время начала ещё не установлено, сохраняем его
+        startTime = Date.now();
+        localStorage.setItem('startTime', startTime);
+    }
+
+    // Если счётчик уже работает, просто запускаем обновление времени
+    if (!isRunning) {
+        isRunning = true;
+        interval = setInterval(updateTimer, 1000);
+        document.getElementById("startButton").textContent = "Остановить";
+    } else {
+        // Если счётчик уже работает, останавливаем его
+        isRunning = false;
+        clearInterval(interval);
+        document.getElementById("startButton").textContent = "Старт";
+    }
+}
 
 function updateTimer() {
     const currentTime = Date.now();
@@ -9,16 +29,8 @@ function updateTimer() {
     const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
     const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
 
     document.getElementById("days").textContent = `Дни: ${days}`;
     document.getElementById("hours").textContent = `Часы: ${hours}`;
     document.getElementById("minutes").textContent = `Минуты: ${minutes}`;
-    document.getElementById("seconds").textContent = `Секунды: ${seconds}`;
 }
-
-function resetTimer() {
-    startTime = Date.now();
-}
-
-interval = setInterval(updateTimer, 1000);
